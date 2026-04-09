@@ -128,6 +128,7 @@
                 <li><a href="about.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'about.php' ? 'text-brand-lime' : ''; ?>">About Us</a></li>
                 <li><a href="services.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'services.php' ? 'text-brand-lime' : ''; ?>">Services</a></li>
                 <li><a href="projects.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'projects.php' ? 'text-brand-lime' : ''; ?>">Project</a></li>
+                <li><a href="events.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'events.php' ? 'text-brand-lime' : ''; ?>">Events</a></li>
                 <li><a href="contact.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'contact.php' ? 'text-brand-lime' : ''; ?>">Contact</a></li>
             </ul>
 

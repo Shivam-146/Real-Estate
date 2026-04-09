@@ -30,3 +30,21 @@ CREATE TABLE IF NOT EXISTS leads (
     status ENUM('new', 'contacted', 'closed') DEFAULT 'new',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Create events table
+CREATE TABLE IF NOT EXISTS events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    event_date DATETIME NOT NULL,
+    location VARCHAR(255),
+    image_url VARCHAR(255),
+    status ENUM('upcoming', 'completed', 'cancelled') DEFAULT 'upcoming',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Seed Events
+INSERT INTO events (title, description, event_date, location, image_url) VALUES 
+('Luxury Villa Site Visit', 'Join us for an exclusive walkthrough of our latest luxury villa project in Skyline Heights. Experience premium living firsthand.', '2026-04-12 10:00:00', 'Skyline Heights, Mumbai', 'about1.png'),
+('Oceanfront Apartment Launch', 'Be the first to see our new oceanfront smart apartments. Refreshments will be served.', '2026-04-15 11:30:00', 'Marine Drive, Mumbai', 'service2.png'),
+('Investment Webinar', 'A session on the future of real estate investments in urban areas. Experts will share insights on ROI.', '2026-04-20 18:00:00', 'Online / Zoom', 'service3.png');
