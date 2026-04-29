@@ -116,11 +116,8 @@
     <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 px-6 py-6 lg:px-20">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="index.php" class="flex items-center gap-2 group">
-                <i class="ph-bold ph-caret-up text-brand-lime text-3xl group-hover:scale-110 transition-transform duration-300"></i>
-                <h2 class="text-2xl font-heading tracking-tighter uppercase leading-none">
-                    <span class="font-light text-white/90">Real</span> <span class="font-black text-brand-lime drop-shadow-[0_0_8px_rgba(203,255,84,0.4)]">Estate</span>
-                </h2>
+            <a href="index.php" class="flex items-center gap-2 group ml-4 w-48 md:w-64 shrink-0">
+                <img src="img/logo.png" alt="Swastik Construction Logo" class="h-16 md:h-20 w-auto origin-left scale-[2.5] group-hover:scale-[2.6] transition-transform duration-300">
             </a>
 
             <ul class="hidden lg:flex items-center gap-12 text-white">
@@ -132,6 +129,79 @@
                 <li><a href="contact.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'contact.php' ? 'text-brand-lime' : ''; ?>">Contact</a></li>
             </ul>
 
-            <a href="contact.php" class="btn btn-primary hidden sm:flex !py-3">Enquiry Now</a>
+            <a href="contact.php" class="btn btn-primary hidden lg:flex !py-3">Enquiry Now</a>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="menuBtn" class="lg:hidden bg-brand-lime text-brand-teal text-3xl p-2 rounded-xl transition-all shadow-lg relative z-50">
+                <i class="ph-bold ph-list"></i>
+            </button>
         </div>
     </nav>
+
+    <!-- Mobile Menu Components -->
+    <!-- Backdrop -->
+    <div id="menuBackdrop" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-[60] opacity-0 pointer-events-none transition-all duration-500"></div>
+
+    <!-- Sidebar Drawer -->
+    <div id="mobileMenu" class="fixed top-0 right-0 h-full w-[300px] bg-brand-teal z-[70] translate-x-full transition-transform duration-500 flex flex-col p-10 shadow-[-20px_0_50px_rgba(0,0,0,0.3)]">
+        <button id="closeBtn" class="self-end text-brand-lime text-4xl hover:rotate-90 transition-all mb-12">
+            <i class="ph-bold ph-x"></i>
+        </button>
+        <ul class="flex flex-col gap-6 text-xl font-bold text-white uppercase tracking-wider mb-auto">
+            <li><a href="index.php" class="mobile-link">Home</a></li>
+            <li><a href="about.php" class="mobile-link">About Us</a></li>
+            <li><a href="services.php" class="mobile-link">Services</a></li>
+            <li><a href="projects.php" class="mobile-link">Project</a></li>
+            <li><a href="events.php" class="mobile-link">Events</a></li>
+            <li><a href="contact.php" class="mobile-link text-brand-lime">Contact</a></li>
+        </ul>
+        <div class="mt-10">
+            <a href="contact.php" class="btn btn-primary w-full py-4 rounded-xl text-xs">Enquiry Now</a>
+        </div>
+    </div>
+
+    <script>
+        // Desktop Navbar Scroll Logic
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-brand-teal/90', 'backdrop-blur-xl', 'shadow-xl', 'py-4');
+                navbar.classList.remove('py-6');
+            } else {
+                navbar.classList.remove('bg-brand-teal/90', 'backdrop-blur-xl', 'shadow-xl', 'py-4');
+                navbar.classList.add('py-6');
+            }
+        });
+
+        // Mobile Menu Toggle Logic
+        const menuBtn = document.getElementById('menuBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const backdrop = document.getElementById('menuBackdrop');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function openMenu() {
+            mobileMenu.classList.remove('translate-x-full');
+            backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.add('translate-x-full');
+            backdrop.classList.add('opacity-0', 'pointer-events-none');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        menuBtn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        backdrop.addEventListener('click', closeMenu);
+
+        // Close menu when a link is clicked
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+    </script>
+
+    <style>
+        .mobile-link { @apply hover:text-brand-lime transition-all duration-300 active:scale-90 inline-block; }
+    </style>

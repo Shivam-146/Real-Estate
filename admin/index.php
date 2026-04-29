@@ -1,13 +1,34 @@
 <?php
 $adminTitle = "Dashboard";
+require_once __DIR__ . '/../config/db.php';
+
+// Fetch Statistics
+try {
+    // Total Properties
+    $propCount = $pdo->query("SELECT COUNT(*) FROM properties")->fetchColumn();
+    
+    $leadCount = $pdo->query("SELECT COUNT(*) FROM leads")->fetchColumn();
+    
+    // Upcoming Events
+    $eventCount = $pdo->query("SELECT COUNT(*) FROM events WHERE event_date >= NOW()")->fetchColumn();
+    
+    // Recent Leads
+    $stmt = $pdo->query("SELECT * FROM leads ORDER BY created_at DESC LIMIT 5");
+    $recentLeads = $stmt->fetchAll();
+} catch (PDOException $e) {
+    $propCount = 0;
+    $leadCount = 0;
+    $eventCount = 0;
+    $recentLeads = [];
+}
+
 include __DIR__ . '/../common/admin_header.php';
 include __DIR__ . '/../common/admin_sidebar.php';
 ?>
 
-<!-- Header Section -->
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
     <div>
-        <h1 class="text-4xl lg:text-5xl font-heading font-black tracking-tighter text-brand-blue mb-2">Overview Dashboard.</h1>
+        <h1 class="text-4xl lg:text-5xl font-heading font-black tracking-tighter mb-2 text-gradient">Overview Dashboard.</h1>
         <p class="text-brand-light font-medium text-lg italic">Welcome back to your administration portal.</p>
     </div>
     
@@ -33,7 +54,7 @@ include __DIR__ . '/../common/admin_sidebar.php';
         </div>
         <div>
             <p class="text-brand-light font-bold text-sm uppercase tracking-widest mb-2">Total Properties</p>
-            <h3 class="text-5xl font-heading font-black text-brand-blue tracking-tighter">24.</h3>
+            <h3 class="text-5xl font-heading font-black text-brand-blue tracking-tighter"><?php echo str_pad($propCount, 2, '0', STR_PAD_LEFT); ?>.</h3>
         </div>
     </div>
 
@@ -44,11 +65,10 @@ include __DIR__ . '/../common/admin_sidebar.php';
             <div class="w-16 h-16 bg-white/10 rounded-3xl flex items-center justify-center text-brand-accent text-3xl font-bold">
                 <i class="ph-fill ph-users-three"></i>
             </div>
-            <span class="badge bg-brand-accent/20 text-brand-accent border-brand-accent/30">+12% New</span>
         </div>
         <div class="relative z-10">
-            <p class="text-white/40 font-bold text-sm uppercase tracking-widest mb-2">Active Leads</p>
-            <h3 class="text-5xl font-heading font-black text-brand-accent tracking-tighter">145.</h3>
+            <p class="text-white/40 font-bold text-sm uppercase tracking-widest mb-2">Total Leads</p>
+            <h3 class="text-5xl font-heading font-black text-brand-accent tracking-tighter"><?php echo str_pad($leadCount, 2, '0', STR_PAD_LEFT); ?>.</h3>
         </div>
     </div>
 
@@ -58,11 +78,10 @@ include __DIR__ . '/../common/admin_sidebar.php';
             <div class="w-16 h-16 bg-brand-bg rounded-3xl flex items-center justify-center text-brand-blue text-3xl font-bold">
                 <i class="ph-fill ph-calendar-star"></i>
             </div>
-            <span class="text-xs font-bold text-emerald-500 uppercase flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div> Live Today</span>
         </div>
         <div>
             <p class="text-brand-light font-bold text-sm uppercase tracking-widest mb-2">Upcoming Events</p>
-            <h3 class="text-5xl font-heading font-black text-brand-blue tracking-tighter">08.</h3>
+            <h3 class="text-5xl font-heading font-black text-brand-blue tracking-tighter"><?php echo str_pad($eventCount, 2, '0', STR_PAD_LEFT); ?>.</h3>
         </div>
     </div>
 </div>
@@ -70,7 +89,7 @@ include __DIR__ . '/../common/admin_sidebar.php';
 <!-- Recent Leads Table Section -->
 <div class="bg-white rounded-[3rem] p-8 lg:p-12 border border-slate-100 shadow-sm overflow-hidden text-brand-blue">
     <div class="flex justify-between items-center mb-10 px-4">
-        <h2 class="text-3xl font-heading font-black tracking-tighter">Recent Business Leads.</h2>
+        <h2 class="text-3xl font-heading font-black tracking-tighter text-gradient-vibrant">Recent Business Leads.</h2>
         <a href="leads.php" class="text-sm font-black text-brand-light hover:text-brand-blue flex items-center gap-2">Full Report <i class="ph ph-caret-right"></i></a>
     </div>
     
@@ -82,31 +101,40 @@ include __DIR__ . '/../common/admin_sidebar.php';
                     <th class="pb-8 px-4">Property of Interest</th>
                     <th class="pb-8 px-4">Date Recieved</th>
                     <th class="pb-8 px-4 text-center">Status</th>
-                    <th class="pb-8 px-4 text-right">Actions</th>
                 </tr>
             </thead>
             <tbody class="text-brand-blue font-bold">
-                <tr class="group hover:bg-slate-50/50 transition-colors">
-                    <td class="py-10 px-4">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-xl">JD</div>
-                            <div>
-                                <p class="leading-none mb-1 text-slate-900">Johnathan Doe</p>
-                                <p class="text-[10px] text-brand-light">john@example.com</p>
+                <?php if (empty($recentLeads)): ?>
+                    <tr><td colspan="4" class="py-10 text-center text-brand-light italic">No enquiries yet.</td></tr>
+                <?php else: ?>
+                    <?php foreach ($recentLeads as $lead): ?>
+                    <tr class="group hover:bg-slate-50/50 transition-colors">
+                        <td class="py-10 px-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-sm font-black uppercase">
+                                    <?php echo substr($lead['full_name'], 0, 2); ?>
+                                </div>
+                                <div>
+                                    <p class="leading-none mb-1 text-slate-900"><?php echo htmlspecialchars($lead['full_name']); ?></p>
+                                    <p class="text-[10px] text-brand-light"><?php echo htmlspecialchars($lead['email']); ?></p>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td class="py-10 px-4 text-slate-800">Skyline Luxury Villa</td>
-                    <td class="py-10 px-4 text-slate-600">April 08, 2026</td>
-                    <td class="py-10 px-4 text-center"><span class="badge badge-new">New Lead</span></td>
-                    <td class="py-10 px-4 text-right">
-                        <button class="w-10 h-10 rounded-xl hover:bg-slate-100 transition-colors"><i class="ph-bold ph-dots-three-outline text-brand-blue"></i></button>
-                    </td>
-                </tr>
-                <!-- More rows as needed... -->
+                        </td>
+                        <td class="py-10 px-4 text-slate-800">
+                            <span class="text-xs font-black uppercase tracking-widest bg-brand-accent/20 px-3 py-1 rounded-full">
+                                <?php echo htmlspecialchars($lead['property_name'] ? $lead['property_name'] : 'General'); ?>
+                            </span>
+                        </td>
+                        <td class="py-10 px-4 text-slate-600 font-medium"><?php echo date('M d, Y', strtotime($lead['created_at'])); ?></td>
+                        <td class="py-10 px-4 text-center"><span class="badge badge-new"><?php echo ucfirst($lead['status']); ?></span></td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
 </div>
+
+<?php include '../common/admin_footer.php'; ?>
 
 <?php include '../common/admin_footer.php'; ?>

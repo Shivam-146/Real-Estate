@@ -24,6 +24,9 @@ require_once __DIR__ . '/auth_check.php';
                         'brand-light': '#64748b',
                         'brand-accent': '#CBFF54',
                         'brand-bg': '#f8fafc',
+                        'brand-pink': '#f472b6',
+                        'brand-purple': '#a855f7',
+                        'brand-sky': '#38bdf8',
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -47,6 +50,9 @@ require_once __DIR__ . '/auth_check.php';
         
         .badge { px: 1rem; padding-top: 0.375rem; padding-bottom: 0.375rem; border-radius: 9999px; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; }
         .quick-action-btn { display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 2rem; border-radius: 1rem; font-weight: 900; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; transition: all 0.3s; }
+
+        .text-gradient { color: #1d4ed8; } /* Bold Blue */
+        .text-gradient-vibrant { color: #db2777; } /* Bold Pink */
     </style>
 </head>
 <body class="bg-[#f8fafc] font-sans text-[#0f172a] min-h-screen">

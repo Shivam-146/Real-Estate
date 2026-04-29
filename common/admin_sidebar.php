@@ -3,21 +3,20 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
 <!-- Mobile Navigation (hidden on desktop) -->
 <div class="lg:hidden flex items-center justify-between p-6 bg-brand-blue text-white sticky top-0 z-50">
-    <div class="flex items-center gap-2">
-        <i class="ph-bold ph-caret-up text-brand-accent text-3xl"></i>
-        <span class="font-heading font-black text-xl uppercase tracking-tighter">Estate.</span>
+    <div class="flex items-center gap-2 ml-2">
+        <img src="../img/logo.png" alt="Swastik Construction Logo" class="h-10 w-auto origin-left scale-[2.5]">
     </div>
-    <button onclick="toggleSidebar()" class="text-3xl"><i class="ph ph-list"></i></button>
+    <div class="flex items-center gap-4">
+        <a href="logout.php" class="text-red-400 hover:text-red-300 transition-colors"><i class="ph ph-sign-out text-2xl"></i></a>
+        <button onclick="toggleSidebar()" class="text-3xl"><i class="ph ph-list"></i></button>
+    </div>
 </div>
 
 <div class="flex">
     <!-- Sidebar -->
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-80 bg-brand-blue text-white p-8 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
-        <div class="flex items-center gap-3 mb-16 ml-2">
-            <i class="ph-bold ph-caret-up text-brand-accent text-5xl"></i>
-            <h2 class="text-3xl font-heading tracking-tighter uppercase leading-none">
-                <span class="font-light opacity-60">Real</span> <span class="font-black text-brand-accent">Estate</span>
-            </h2>
+        <div class="flex items-center gap-3 mb-16 ml-6">
+            <img src="../img/logo.png" alt="Swastik Construction Logo" class="h-16 w-auto origin-left scale-[2.5]">
         </div>
         
         <nav class="space-y-3 flex-grow">

@@ -2,7 +2,6 @@
 $adminTitle = "Events";
 require_once __DIR__ . '/../config/db.php';
 
-// Handle Form Submissions (Add / Edit / Delete)
 $message = "";
 $error = "";
 
@@ -17,8 +16,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $description = $_POST['description'] ?? '';
         $image_url = $_POST['existing_image'] ?? '';
 
-        // Handle Image Upload
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        // Handle Image Upload (Priority to compressed image from client-side)
+        if (isset($_POST['compressed_image']) && !empty($_POST['compressed_image'])) {
+            $data = $_POST['compressed_image'];
+            if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
+                $data = substr($data, strpos($data, ',') + 1);
+                $type = strtolower($type[1]); // jpg, png, etc
+                $data = base64_decode($data);
+                
+                if ($data !== false) {
+                    $upload_dir = __DIR__ . '/../img/events/';
+                    if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+                    
+                    $new_filename = uniqid('event_') . '.' . $type;
+                    $upload_path = $upload_dir . $new_filename;
+                    
+                    if (file_put_contents($upload_path, $data)) {
+                        $image_url = 'img/events/' . $new_filename;
+                    } else {
+                        $error = "Failed to save compressed image.";
+                    }
+                } else {
+                    $error = "Image decoding failed.";
+                }
+            }
+        } elseif (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $upload_dir = __DIR__ . '/../img/events/';
             if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
             
@@ -28,23 +50,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
                 $image_url = 'img/events/' . $new_filename;
+            } else {
+                $error = "Failed to move uploaded file.";
             }
+        } elseif (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $error = "Upload error: " . $_FILES['image']['error'];
         }
 
-        try {
-            if ($id) {
-                // Update
-                $stmt = $pdo->prepare("UPDATE events SET title = ?, location = ?, event_date = ?, description = ?, image_url = ? WHERE id = ?");
-                $stmt->execute([$title, $location, $event_date, $description, $image_url, $id]);
-                $message = "Event updated successfully!";
-            } else {
-                // Insert
-                $stmt = $pdo->prepare("INSERT INTO events (title, location, event_date, description, image_url) VALUES (?, ?, ?, ?, ?)");
-                $stmt->execute([$title, $location, $event_date, $description, $image_url]);
-                $message = "Event created successfully!";
+        // Only proceed if there's no error
+        if (empty($error)) {
+            try {
+                if ($id) {
+                    // Update
+                    $stmt = $pdo->prepare("UPDATE events SET title = ?, location = ?, event_date = ?, description = ?, image_url = ? WHERE id = ?");
+                    $stmt->execute([$title, $location, $event_date, $description, $image_url, $id]);
+                    $message = "Event updated successfully!";
+                } else {
+                    // Insert
+                    $stmt = $pdo->prepare("INSERT INTO events (title, location, event_date, description, image_url) VALUES (?, ?, ?, ?, ?)");
+                    $stmt->execute([$title, $location, $event_date, $description, $image_url]);
+                    $message = "Event created successfully!";
+                }
+            } catch (PDOException $e) {
+                $error = "Database error: " . $e->getMessage();
             }
-        } catch (PDOException $e) {
-            $error = "Database error: " . $e->getMessage();
         }
     } elseif ($action === 'delete_event') {
         $id = $_POST['id'] ?? null;
@@ -76,7 +105,7 @@ include __DIR__ . '/../common/admin_sidebar.php';
 <!-- Header Section -->
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
     <div>
-        <h1 class="text-4xl lg:text-5xl font-heading font-black tracking-tighter text-brand-blue mb-2">Upcoming Events.</h1>
+        <h1 class="text-4xl lg:text-5xl font-heading font-black tracking-tighter text-gradient mb-2">Upcoming Events.</h1>
         <p class="text-brand-light font-medium text-lg italic">Manage site visits and property launch events.</p>
     </div>
     
@@ -176,6 +205,7 @@ include __DIR__ . '/../common/admin_sidebar.php';
                 <input type="hidden" name="action" value="save_event">
                 <input type="hidden" name="id" id="eventId">
                 <input type="hidden" name="existing_image" id="existingImage">
+                <input type="hidden" name="compressed_image" id="compressedImage">
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
@@ -274,6 +304,52 @@ document.addEventListener('DOMContentLoaded', () => {
             
             toggleModal(true);
         });
+    });
+    
+    // Image Compression Logic
+    const imageInput = document.getElementById('image');
+    const compressedImageInput = document.getElementById('compressedImage');
+    
+    imageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        // Show loading state on button
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="ph ph-circle-notch animate-spin"></i> Processing Image...';
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 1920;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Compress and save to hidden input
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+                compressedImageInput.value = dataUrl;
+                
+                // Restore button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            };
+        };
     });
     
     // Delete Logic

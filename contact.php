@@ -1,6 +1,33 @@
 <?php
+require_once 'config/db.php';
+
+// Handle Lead Submission
+$message = "";
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'save_contact_lead') {
+    $full_name = $_POST['full_name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $property_name = $_POST['property_name'] ?? '';
+    $message_content = $_POST['message'] ?? '';
+    
+    try {
+        $stmt = $pdo->prepare("INSERT INTO leads (full_name, email, property_name, message) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$full_name, $email, $property_name, $message_content]);
+        $message = "Your enquiry has been submitted successfully! We will contact you soon.";
+    } catch (PDOException $e) {
+        $message = "Error: " . $e->getMessage();
+    }
+}
+
+// Fetch properties for dropdown
+try {
+    $stmt = $pdo->query("SELECT name FROM properties ORDER BY name ASC");
+    $properties = $stmt->fetchAll(PDO::FETCH_COLUMN);
+} catch (PDOException $e) {
+    $properties = [];
+}
+
 $pageTitle = "Contact Us | Real Estate Portal";
-$pageDescription = "Get in touch with our expert real estate team for project enquiries, site visits, and commercial investment guidance in Mumbai.";
+$pageDescription = "Get in touch with Swastik Construction for project enquiries, site visits, and commercial investment guidance in Bishnupur.";
 include 'common/header.php';
 ?>
 
@@ -28,15 +55,15 @@ include 'common/header.php';
                 <div class="space-y-8 mb-12">
                     <div class="flex items-start gap-6">
                         <div class="w-16 h-16 bg-brand-teal rounded-2xl flex items-center justify-center text-brand-lime text-3xl flex-shrink-0 shadow-lg shadow-brand-teal/20"><i class="ph-bold ph-phone-call"></i></div>
-                        <div><h4 class="text-xs font-black text-brand-teal/40 uppercase tracking-[4px] mb-2">Call Us</h4><p class="text-2xl font-bold text-brand-teal">+91 98765 43210</p></div>
+                        <div class="min-w-0 flex-1"><h4 class="text-xs font-black text-brand-teal/40 uppercase tracking-[4px] mb-2">Call Us</h4><p class="text-lg md:text-2xl font-bold text-brand-teal break-words">8637 818 655 / 832 700 6565</p></div>
                     </div>
                     <div class="flex items-start gap-6">
                         <div class="w-16 h-16 bg-brand-teal rounded-2xl flex items-center justify-center text-brand-lime text-3xl flex-shrink-0 shadow-lg shadow-brand-teal/20"><i class="ph-bold ph-envelope-simple"></i></div>
-                        <div><h4 class="text-xs font-black text-brand-teal/40 uppercase tracking-[4px] mb-2">Email Us</h4><p class="text-2xl font-bold text-brand-teal">info@realestate.com</p></div>
+                        <div class="min-w-0 flex-1"><h4 class="text-xs font-black text-brand-teal/40 uppercase tracking-[4px] mb-2">Email Us</h4><p class="text-lg md:text-2xl font-bold text-brand-teal break-words">swastikconstruction@gmail.com</p></div>
                     </div>
                     <div class="flex items-start gap-6">
                         <div class="w-16 h-16 bg-brand-teal rounded-2xl flex items-center justify-center text-brand-lime text-3xl flex-shrink-0 shadow-lg shadow-brand-teal/20"><i class="ph-bold ph-map-pin"></i></div>
-                        <div><h4 class="text-xs font-black text-brand-teal/40 uppercase tracking-[4px] mb-2">Visit Office</h4><p class="text-2xl font-bold text-brand-teal">Mumbai Headquarters, India</p></div>
+                        <div class="min-w-0 flex-1"><h4 class="text-xs font-black text-brand-teal/40 uppercase tracking-[4px] mb-2">Visit Office</h4><p class="text-sm md:text-xl font-bold text-brand-teal uppercase break-words">Hriddhi Tower, Ground Floor, S-10,<br>Thanagora :: Kurbantola :: Bishnupur</p></div>
                     </div>
                 </div>
                 
@@ -51,11 +78,17 @@ include 'common/header.php';
             <div class="bg-white rounded-[3rem] p-12 lg:p-16 border border-gray-100 shadow-2xl relative" data-aos="fade-left">
                 <div class="absolute inset-0 bg-brand-teal opacity-[0.02] rounded-[3rem]"></div>
                 <div class="relative z-10 h-full flex flex-col">
-                    <h3 class="text-3xl font-heading font-black text-brand-teal mb-10 tracking-tighter">Project Enquiry Form.</h3>
-                    <form class="space-y-6 flex-grow flex flex-col">
+                    <h3 class="text-3xl font-heading font-black text-brand-teal mb-4 tracking-tighter">Project Enquiry Form.</h3>
+                    <?php if ($message): ?>
+                        <div class="mb-6 p-4 bg-brand-teal text-brand-lime font-bold rounded-xl text-center">
+                            <i class="ph-bold ph-check-circle mr-2"></i> <?php echo $message; ?>
+                        </div>
+                    <?php endif; ?>
+                    <form action="contact.php" method="POST" class="space-y-6 flex-grow flex flex-col">
+                        <input type="hidden" name="action" value="save_contact_lead">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><label class="text-[10px] font-black uppercase text-brand-teal/40 tracking-[4px] mb-3 block">Full Name</label><input type="text" placeholder="John Doe" class="form-input"></div>
-                            <div><label class="text-[10px] font-black uppercase text-brand-teal/40 tracking-[4px] mb-3 block">Email ID</label><input type="email" placeholder="john@example.com" class="form-input"></div>
+                            <div><label class="text-[10px] font-black uppercase text-brand-teal/40 tracking-[4px] mb-3 block">Full Name</label><input type="text" name="full_name" required placeholder="John Doe" class="form-input font-bold"></div>
+                            <div><label class="text-[10px] font-black uppercase text-brand-teal/40 tracking-[4px] mb-3 block">Email ID</label><input type="email" name="email" required placeholder="john@example.com" class="form-input font-bold"></div>
                         </div>
                         <div>
                             <label class="text-[10px] font-black uppercase text-brand-teal/40 tracking-[4px] mb-3 block">Interest Type</label>
@@ -67,15 +100,17 @@ include 'common/header.php';
                                     background-size: 1rem;
                                 }
                             </style>
-                            <select class="form-input appearance-none">
-                                <option>Commercial Investment</option>
-                                <option>Residential Villa</option>
-                                <option>Property Management</option>
+                            <select name="property_name" required class="form-input appearance-none font-bold">
+                                <option value="">Select a Project</option>
+                                <?php foreach ($properties as $propName): ?>
+                                    <option value="<?php echo htmlspecialchars($propName); ?>"><?php echo htmlspecialchars($propName); ?></option>
+                                <?php endforeach; ?>
+                                <option value="General Investment">General Investment</option>
                             </select>
                         </div>
                         <div class="flex-grow">
                             <label class="text-[10px] font-black uppercase text-brand-teal/40 tracking-[4px] mb-3 block">Your Requirements</label>
-                            <textarea placeholder="Tell us more about your ideal property..." class="form-input h-full min-h-[150px] resize-none"></textarea>
+                            <textarea name="message" placeholder="Tell us more about your ideal property..." class="form-input font-bold h-full min-h-[150px] resize-none"></textarea>
                         </div>
                         <button type="submit" class="btn btn-dark w-full !py-6 !text-lg !rounded-2xl shadow-xl shadow-brand-teal/20">Submit Detailed Enquiry</button>
                     </form>
@@ -87,7 +122,7 @@ include 'common/header.php';
     <!-- Full Map Section -->
     <section class="h-[600px] w-full px-6 pb-32">
         <div class="w-full h-full rounded-[3rem] overflow-hidden border border-gray-100 shadow-xl grayscale contrast-125 mb-20 relative">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15086.1235372138!2d72.8228!3d18.9388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7d1e0f089606d%3A0x6b490f2382e2107!2sNariman%20Point%2C%20Mumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1711883547844!5m2!1sen!2sin" class="w-full h-full" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3670.5971420004544!2d87.31560669999999!3d23.0752266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f791529ebc9ee9%3A0x7a34b884f51dc615!2sHriddhi%20Tower!5e0!3m2!1sen!2sin!4v1777037844888!5m2!1sen!2sin" class="w-full h-full" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </section>
 

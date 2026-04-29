@@ -17,64 +17,141 @@ include 'common/header.php';
         <div class="absolute inset-0 bg-[url('hero.png')] opacity-10 bg-center bg-cover"></div>
     </header>
 
-    <!-- Content: Services Grid -->
-    <section class="py-32 px-6">
-        <div class="max-w-7xl mx-auto mb-20 text-center" data-aos="fade-up">
-            <span class="font-bold text-xs tracking-[0.4em] text-brand-teal/30 uppercase mb-6 block">End-To-End Management</span>
-            <h2 class="text-5xl md:text-8xl font-heading font-black text-brand-teal mb-8 tracking-tighter leading-[0.95]">
-                Property Management <span class="italic text-brand-lime bg-brand-teal px-4">Lifecycle.</span>
+    <!-- Content: Special Services Grid -->
+    <section class="py-32 px-6 bg-slate-50">
+        <div class="max-w-7xl mx-auto mb-16 text-center" data-aos="fade-up">
+            <h2 class="text-3xl md:text-5xl font-heading font-black text-slate-800 tracking-tighter uppercase">
+                Some Special <span class="font-light">Services</span>
             </h2>
         </div>
         
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-            <!-- Service 1 -->
-            <div class="service-card" data-aos="fade-up">
-                <div class="w-16 h-16 bg-brand-lime rounded-full flex items-center justify-center text-3xl text-brand-teal mb-8 shadow-lime"><i class="ph-bold ph-house-line"></i></div>
-                <h3 class="text-2xl font-bold text-brand-teal mb-4">Residential Sales</h3>
-                <p class="text-sm opacity-70 leading-relaxed mb-8">Premium marketing and sales for luxury villas and smart apartment complexes.</p>
-                <a href="projects.php" class="text-xs font-black uppercase text-brand-teal border-b-2 border-brand-lime pb-1 hover:text-brand-lime transition-all">Explore Ready Projects</a>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
+            <!-- Card 1 -->
+            <div class="bg-white border border-gray-100 overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 group flex flex-col" data-aos="fade-up">
+                <div class="relative h-64 overflow-hidden bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Search Properties" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute top-4 right-4 w-12 h-12 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg p-2">
+                        <img src="img/logo.png" alt="Logo" class="w-full h-auto scale-[1.5]">
+                    </div>
+                    <div class="absolute bottom-4 left-4 bg-black text-white text-[10px] font-bold px-4 py-1.5 rounded-full border border-yellow-500/50 shadow-lg tracking-wider">
+                        Search Properties
+                    </div>
+                </div>
+                <div class="p-8 flex items-end justify-between flex-grow">
+                    <div>
+                        <a href="projects.php" class="text-xl font-bold text-slate-800 leading-tight underline decoration-2 underline-offset-4 hover:text-brand-lime transition-colors inline-block">
+                            Search<br>Properties
+                        </a>
+                    </div>
+                    <div class="text-5xl font-heading text-red-600 font-light leading-none">
+                        01
+                    </div>
+                </div>
             </div>
 
-            <!-- Service 2 -->
-            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-16 h-16 bg-brand-lime rounded-full flex items-center justify-center text-3xl text-brand-teal mb-8 shadow-lime"><i class="ph-bold ph-buildings"></i></div>
-                <h3 class="text-2xl font-bold text-brand-teal mb-4">Commercial Leasing</h3>
-                <p class="text-sm opacity-70 leading-relaxed mb-8">Asset management for retail plazas and Grade-A corporate office parks.</p>
-                <a href="projects.php" class="text-xs font-black uppercase text-brand-teal border-b-2 border-brand-lime pb-1 hover:text-brand-lime transition-all">Investment Specs</a>
+            <!-- Card 2 -->
+            <div class="bg-white border border-gray-100 overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 group flex flex-col" data-aos="fade-up" data-aos-delay="100">
+                <div class="relative h-64 overflow-hidden bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Industrial Spaces" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute top-4 right-4 w-12 h-12 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg p-2">
+                        <img src="img/logo.png" alt="Logo" class="w-full h-auto scale-[1.5]">
+                    </div>
+                    <div class="absolute bottom-4 left-4 bg-black text-white text-[10px] font-bold px-4 py-1.5 rounded-full border border-yellow-500/50 shadow-lg tracking-wider">
+                        Industrial Spaces
+                    </div>
+                </div>
+                <div class="p-8 flex items-end justify-between flex-grow">
+                    <div>
+                        <a href="contact.php" class="text-xl font-bold text-slate-800 leading-tight underline decoration-2 underline-offset-4 hover:text-brand-lime transition-colors inline-block">
+                            Industrial<br>Spaces
+                        </a>
+                    </div>
+                    <div class="text-5xl font-heading text-red-600 font-light leading-none">
+                        02
+                    </div>
+                </div>
             </div>
 
-            <!-- Service 3 -->
-            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-16 h-16 bg-brand-lime rounded-full flex items-center justify-center text-3xl text-brand-teal mb-8"><i class="ph-bold ph-briefcase"></i></div>
-                <h3 class="text-2xl font-bold text-brand-teal mb-4">Lifecycle Tracking</h3>
-                <p class="text-sm opacity-70 leading-relaxed mb-8">Real-time status updates from under-construction to ready-to-move assets.</p>
-                <a href="admin/index.php" class="text-xs font-black uppercase text-brand-teal border-b-2 border-brand-lime pb-1 hover:text-brand-lime transition-all">Track Construction</a>
+            <!-- Card 3 -->
+            <div class="bg-white border border-gray-100 overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 group flex flex-col" data-aos="fade-up" data-aos-delay="200">
+                <div class="relative h-64 overflow-hidden bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1524813686514-a57563d77965?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Location Search" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute top-4 right-4 w-12 h-12 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg p-2">
+                        <img src="img/logo.png" alt="Logo" class="w-full h-auto scale-[1.5]">
+                    </div>
+                    <div class="absolute bottom-4 left-4 bg-black text-white text-[10px] font-bold px-4 py-1.5 rounded-full border border-yellow-500/50 shadow-lg tracking-wider">
+                        Location Search
+                    </div>
+                </div>
+                <div class="p-8 flex items-end justify-between flex-grow">
+                    <div>
+                        <span class="text-xl font-bold text-slate-800 leading-tight inline-block">
+                            Location<br>Search
+                        </span>
+                    </div>
+                    <div class="text-5xl font-heading text-red-600 font-light leading-none">
+                        03
+                    </div>
+                </div>
             </div>
 
-            <!-- Service 4 -->
-            <div class="service-card" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-16 h-16 bg-brand-lime rounded-full flex items-center justify-center text-3xl text-brand-teal mb-8"><i class="ph-bold ph-users-three"></i></div>
-                <h3 class="text-2xl font-bold text-brand-teal mb-4">Investor Consult</h3>
-                <p class="text-sm opacity-70 leading-relaxed mb-8">Specialized guidance for high-net-worth real estate portfolio expansion.</p>
-                <a href="contact.php" class="text-xs font-black uppercase text-brand-teal border-b-2 border-brand-lime pb-1 hover:text-brand-lime transition-all">Start Consultation</a>
+            <!-- Card 4 -->
+            <div class="bg-white border border-gray-100 overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 group flex flex-col" data-aos="fade-up" data-aos-delay="300">
+                <div class="relative h-64 overflow-hidden bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Search for Rent" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute top-4 right-4 w-12 h-12 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg p-2">
+                        <img src="img/logo.png" alt="Logo" class="w-full h-auto scale-[1.5]">
+                    </div>
+                    <div class="absolute bottom-4 left-4 bg-black text-white text-[10px] font-bold px-4 py-1.5 rounded-full border border-yellow-500/50 shadow-lg tracking-wider">
+                        Search for Rent
+                    </div>
+                </div>
+                <div class="p-8 flex items-end justify-between flex-grow">
+                    <div>
+                        <span class="text-xl font-bold text-slate-800 leading-tight inline-block">
+                            Search for<br>Rent
+                        </span>
+                    </div>
+                    <div class="text-5xl font-heading text-red-600 font-light leading-none">
+                        04
+                    </div>
+                </div>
             </div>
+
         </div>
     </section>
 
-    <!-- Why Choose Us? -->
+    <!-- Our Process -->
     <section class="bg-brand-teal py-32 px-6">
-        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20 items-center">
-            <div class="lg:w-1/2">
-                <h2 class="text-5xl md:text-7xl font-heading font-black text-white mb-10 tracking-tighter leading-tight">Advanced Property Dashboard.</h2>
-                <p class="text-xl text-white/50 mb-12 font-medium">Manage your entire property portfolio with our integrated data-driven dashboard. Real-time insights, lead tracking, and maintenance logs all in one place.</p>
-                <a href="admin/index.php" class="btn btn-primary !py-5">Access Admin Portal</a>
+        <div class="max-w-7xl mx-auto flex flex-col xl:flex-row gap-20 items-center">
+            <div class="xl:w-1/3">
+                <h2 class="text-5xl md:text-7xl font-heading font-black text-white mb-10 tracking-tighter leading-tight">Our Simple Process.</h2>
+                <p class="text-xl text-white/50 mb-12 font-medium">Finding your perfect premium property or industrial space is easy with Swastik Construction. Follow these three simple steps.</p>
+                <a href="projects.php" class="btn btn-primary !py-5">Start Your Search</a>
             </div>
-            <div class="lg:w-1/2 relative bg-white/5 p-12 rounded-[4rem] border border-white/10 shadow-3xl shadow-brand-lime/10">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white/10 p-10 rounded-[3rem] hover:bg-white/20 duration-300 border border-white/5"><i class="ph-bold ph-chart-line-up text-4xl text-brand-lime mb-6 block"></i><h4 class="text-xl font-bold text-white mb-2">Yield Analysis</h4><p class="text-xs text-white/40 font-bold uppercase tracking-widest">Growth Tracking</p></div>
-                    <div class="bg-white/10 p-10 rounded-[3rem] hover:bg-white/20 duration-300 border border-white/5"><i class="ph-bold ph-shield-check text-4xl text-brand-lime mb-6 block"></i><h4 class="text-xl font-bold text-white mb-2">Legal Compliance</h4><p class="text-xs text-white/40 font-bold uppercase tracking-widest">Risk Management</p></div>
-                    <div class="bg-white/10 p-10 rounded-[3rem] hover:bg-white/20 duration-300 border border-white/5"><i class="ph-bold ph-lightning text-4xl text-brand-lime mb-6 block"></i><h4 class="text-xl font-bold text-white mb-2">Fast Approvals</h4><p class="text-xs text-white/40 font-bold uppercase tracking-widest">Rapid 48h Response</p></div>
-                    <div class="bg-white/10 p-10 rounded-[3rem] hover:bg-white/20 duration-300 border border-white/5"><i class="ph-bold ph-globe text-4xl text-brand-lime mb-6 block"></i><h4 class="text-xl font-bold text-white mb-2">Global Access</h4><p class="text-xs text-white/40 font-bold uppercase tracking-widest">Remote Tracking</p></div>
+            <div class="xl:w-2/3 relative">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div class="bg-white/5 p-10 rounded-[3rem] border border-white/10 hover:bg-white/10 duration-300 relative group">
+                        <div class="absolute -top-6 -left-6 w-12 h-12 bg-brand-lime text-brand-teal rounded-full flex items-center justify-center font-black text-xl shadow-lg">1</div>
+                        <i class="ph-bold ph-map-pin text-4xl text-brand-lime mb-6 block group-hover:scale-110 transition-transform"></i>
+                        <h4 class="text-xl font-bold text-white mb-4">Search Location</h4>
+                        <p class="text-sm text-white/60 leading-relaxed">Browse our prime locations across Bishnupur and find the perfect spot for your next home or business.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="bg-white/5 p-10 rounded-[3rem] border border-white/10 hover:bg-white/10 duration-300 relative group mt-0 md:mt-12">
+                        <div class="absolute -top-6 -left-6 w-12 h-12 bg-brand-lime text-brand-teal rounded-full flex items-center justify-center font-black text-xl shadow-lg">2</div>
+                        <i class="ph-bold ph-buildings text-4xl text-brand-lime mb-6 block group-hover:scale-110 transition-transform"></i>
+                        <h4 class="text-xl font-bold text-white mb-4">See Projects</h4>
+                        <p class="text-sm text-white/60 leading-relaxed">Explore our completed and recent premium projects, featuring high-quality construction.</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="bg-white/5 p-10 rounded-[3rem] border border-white/10 hover:bg-white/10 duration-300 relative group mt-0 md:mt-24">
+                        <div class="absolute -top-6 -left-6 w-12 h-12 bg-brand-lime text-brand-teal rounded-full flex items-center justify-center font-black text-xl shadow-lg">3</div>
+                        <i class="ph-bold ph-paper-plane-tilt text-4xl text-brand-lime mb-6 block group-hover:scale-110 transition-transform"></i>
+                        <h4 class="text-xl font-bold text-white mb-4">Send Enquiries</h4>
+                        <p class="text-sm text-white/60 leading-relaxed">Contact us directly with your requirements and our team will get back to you shortly.</p>
+                    </div>
                 </div>
             </div>
         </div>
